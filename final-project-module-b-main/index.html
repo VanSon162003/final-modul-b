@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+            rel="stylesheet"
+        />
+        <title>Vite App</title>
+    </head>
+    <body>
+        <header class="header">
+            <div class="header__container">
+                <div class="header__inner">
+                    <a href="/" class="header__logo no-copy">
+                        <img
+                            src="./src/asset/icons/logo.svg"
+                            alt="grocerymart"
+                        />
+                        <span class="header__logo--title">grocerymart</span>
+                    </a>
+                    <nav class="nav">
+                        <ul class="nav__list">
+                            <li class="nav__item">
+                                <a class="nav__link" href="/product">Product</a>
+                            </li>
+                            <li class="nav__item">
+                                <a class="nav__link" href="/about">About</a>
+                            </li>
+                            <li class="nav__item">
+                                <a class="nav__link" href="/register"
+                                    >authenticate</a
+                                >
+                            </li>
+                        </ul>
+                    </nav>
+
+                    <div class="header__action">
+                        <form class="header__search">
+                            <input
+                                type="text"
+                                name="search"
+                                id="search"
+                                placeholder="Search"
+                                class="hehe"
+                            />
+                            <button class="header__search--btn no-copy">
+                                <img
+                                    src="./src/asset/icons/search.svg"
+                                    alt="search"
+                                />
+                            </button>
+                        </form>
+                        <div class="header__selection">
+                            <div class="header__fav no-copy">
+                                <button class="header__fav--btn">
+                                    <svg
+                                        class="fav__icon active"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="22"
+                                        height="20"
+                                        viewBox="0 0 22 20"
+                                        fill="currentColor"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            clip-rule="evenodd"
+                                            d="M1.87187 9.59832C0.798865 6.24832 2.05287 2.41932 5.56987 1.28632C7.41987 0.689322 9.46187 1.04132 10.9999 2.19832C12.4549 1.07332 14.5719 0.693322 16.4199 1.28632C19.9369 2.41932 21.1989 6.24832 20.1269 9.59832C18.4569 14.9083 10.9999 18.9983 10.9999 18.9983C10.9999 18.9983 3.59787 14.9703 1.87187 9.59832Z"
+                                            stroke="currentcolor"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+                                        <path
+                                            d="M15 4.69922C16.07 5.04522 16.826 6.00022 16.917 7.12122"
+                                            stroke="currentcolor"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        />
+                                    </svg>
+                                </button>
+                                <span class="header__fav--count">03</span>
+                            </div>
+
+                            <div class="header__selection--stock"></div>
+
+                            <div class="header__cart no-copy">
+                                <button class="header__cart--btn">
+                                    <img
+                                        src="./src/asset/icons/cart.svg"
+                                        alt=""
+                                        class="header__cart--icon"
+                                    />
+                                </button>
+                                <span class="header__cart--count">$65.42</span>
+                            </div>
+
+                            <div class="modal__backdrop">
+                                <div class="modal__container">
+                                    <div class="modal__row">
+                                        <span>Subtotal</span>
+                                        <span class="subtotal"></span>
+                                    </div>
+                                    <div class="modal__row">
+                                        <span>Texes</span>
+                                        <span>Free</span>
+                                    </div>
+
+                                    <div class="modal__row">
+                                        <span>Shipping</span>
+                                        <span>$10.00</span>
+                                    </div>
+
+                                    <div class="modal__row">
+                                        <span>Total Price</span>
+                                        <span class="totalPrice"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div id="app"></div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script type="module" src="/main.js"></script>
+        <script type="module" src="./src/layout/Header.js"></script>
+    </body>
+</html>
