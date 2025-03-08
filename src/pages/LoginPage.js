@@ -8,7 +8,7 @@ function LoginPage() {
                         <h2>Login</h2>
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form id="login">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email address</label>
                                 <input type="email" class="form-control" id="email" placeholder="Enter your email">

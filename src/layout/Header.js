@@ -3,47 +3,94 @@ import { $ } from "../../main";
 const search = $("#search");
 const searchButton = $(".header__search--btn");
 
-searchButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    search.classList.toggle("active");
-});
+if (searchButton) {
+    searchButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        search.classList.toggle("active");
+    });
+}
 
 const headerCartPrice = $(".header__cart--count");
 
 function updateCart() {
-    if (headerCartPrice) {
-        const cartPrice = JSON.parse(localStorage.getItem("cart")) || [];
+    if (!headerCartPrice) return 0;
 
-        if (!cartPrice.length) {
-            headerCartPrice.innerHTML = "$0";
-        } else {
-            let priceCount = cartPrice.reduce((total, cart) => {
-                return total + cart.quantity * cart.price;
-            }, 0);
+    const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+    let totalPrice = cartItems.reduce(
+        (total, item) => total + item.quantity * item.price,
+        0
+    );
 
-            headerCartPrice.innerHTML = "$" + priceCount.toLocaleString();
-        }
-    }
+    headerCartPrice.innerHTML = "$" + totalPrice.toLocaleString();
+    return totalPrice;
 }
 
-updateCart();
-
-// click cart open model
-
+const modalContainer = $(".modal__container");
 const cartIconBtn = $(".header__cart");
 const backDrop = $(".modal__backdrop");
 
-cartIconBtn.onclick = (e) => {
-    backDrop.classList.add("active");
+function renderModal() {
+    const cartProduct = JSON.parse(localStorage.getItem("cart")) || [];
 
-    backDrop.onclick = (e) => {
-        const backDropElement = e.target.closest(".modal__backdrop");
+    if (!modalContainer) return;
 
-        if (backDropElement) {
+    if (!cartProduct.length) {
+        modalContainer.innerHTML = "<h2>Không có sản phẩm nào</h2>";
+        return;
+    }
+
+    const subtotal = updateCart();
+    const shippingFee = 10;
+    const totalPrice = subtotal + shippingFee;
+
+    modalContainer.innerHTML = `
+        <div class="modal__row">
+            <span>Subtotal:</span>
+            <span class="subtotal">$${subtotal.toLocaleString()}</span>
+        </div>
+        <div class="modal__row">
+            <span>Taxes:</span>
+            <span>Free</span>
+        </div>
+        <div class="modal__row">
+            <span>Shipping:</span>
+            <span>$${shippingFee}</span>
+        </div>
+        <div class="modal__row">
+            <span>Total Price:</span>
+            <span class="totalPrice">$${totalPrice.toLocaleString()}</span>
+        </div>
+        <button id="check__out" class="btn btn-warning">Check out</button>
+    `;
+
+    const checkOut = $("#check__out");
+    if (checkOut) {
+        checkOut.onclick = () => {
+            localStorage.removeItem("cart");
             backDrop.classList.remove("active");
-        }
+            updateCart();
+            renderModal();
+            alert("Đặt hàng thành công!");
+        };
+    }
+}
+
+// Hiển thị modal ban đầu
+renderModal();
+
+if (cartIconBtn) {
+    cartIconBtn.onclick = () => {
+        backDrop.classList.add("active");
+
+        backDrop.onclick = (e) => {
+            if (e.target.closest(".modal__backdrop")) {
+                backDrop.classList.remove("active");
+            }
+        };
+
+        renderModal();
     };
-};
+}
 
 document.onkeydown = (e) => {
     if (e.key === "Escape") {

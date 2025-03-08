@@ -321,6 +321,13 @@ body {
     border-radius: 10px;
     background-color: #292e39;
 }
+
+.modal__row {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 /* product */
 
 .product {

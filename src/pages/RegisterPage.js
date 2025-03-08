@@ -8,7 +8,7 @@ function RegisterPage() {
                             <h2>Register</h2>
                         </div>
                         <div class="card-body">
-                            <form>
+                            <form id="register">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Full Name</label>
                                     <input type="text" class="form-control" id="name" placeholder="Enter your full name">

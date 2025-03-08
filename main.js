@@ -223,8 +223,133 @@ router.on("/product", async () => {
 });
 
 router.on("/about", () => render(AboutPage));
-router.on("/login", () => render(LoginPage));
-router.on("/register", () => render(RegisterPage));
+router.on("/login", () =>
+    render(LoginPage, null, () => {
+        const form = document.querySelector("#login");
+        const submitButton = form.querySelector("button[type='submit']");
+
+        const validateEmail = (email) =>
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const email = form.querySelector("#email").value;
+            const password = form.querySelector("#password").value;
+
+            if (!validateEmail(email)) {
+                alert("Email không hợp lệ!");
+                return;
+            }
+
+            if (password.length < 6) {
+                alert("Mật khẩu phải có ít nhất 6 ký tự!");
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = "Đang đăng nhập...";
+
+            try {
+                const response = await fetch("http://localhost:3000/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.accessToken) {
+                    localStorage.setItem("authToken", data.accessToken);
+                    localStorage.setItem("user", JSON.stringify(data.user));
+
+                    alert("Đăng nhập thành công!");
+
+                    router.navigate("/");
+                } else {
+                    alert(
+                        data.message || "Đăng nhập thất bại! Vui lòng thử lại."
+                    );
+                    form.reset();
+                }
+            } catch (error) {
+                console.error("Lỗi đăng nhập:", error);
+                alert("Có lỗi xảy ra, vui lòng thử lại sau.");
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "Đăng nhập";
+            }
+        });
+    })
+);
+
+router.on("/register", () =>
+    render(RegisterPage, null, () => {
+        const form = $("#register");
+        const submitButton = form.querySelector("button[type='submit']");
+
+        const validateEmail = (email) =>
+            /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const email = form.querySelector("#email").value;
+            const password = form.querySelector("#password").value;
+
+            const userInfor = { email, password };
+
+            if (!validateEmail(userInfor.email)) {
+                alert("Email không hợp lệ!");
+                return;
+            }
+
+            if (userInfor.password.length < 6) {
+                alert("Mật khẩu phải có ít nhất 6 ký tự!");
+                return;
+            }
+
+            submitButton.disabled = true;
+            submitButton.textContent = "Đang đăng ký...";
+
+            try {
+                const response = await fetch("http://localhost:3000/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(userInfor),
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.accessToken) {
+                    if (
+                        confirm(
+                            "Đăng ký thành công! Bạn có muốn đăng nhập ngay không?"
+                        )
+                    ) {
+                        router.navigate("/login");
+                    }
+                } else {
+                    alert(
+                        data.message || "Đăng ký thất bại! Vui lòng thử lại."
+                    );
+                    form.reset();
+                }
+            } catch (error) {
+                console.error("Lỗi đăng ký:", error);
+                alert("Có lỗi xảy ra, vui lòng thử lại sau.");
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = "Đăng ký";
+            }
+        });
+    })
+);
+
 router.notFound(() => render(NotFoundPage));
 
 router.resolve();
